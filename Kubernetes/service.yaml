@@ -4,7 +4,7 @@ metadata:
   name: hello-argo-service
   namespace: hello-argo
 spec:
-  type: LoadBalancer
+  type: ClusterIP
   selector:
     app: hello-argo-deployment
   ports:
