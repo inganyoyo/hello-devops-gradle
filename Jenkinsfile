@@ -16,8 +16,7 @@ pipeline {
             }
             }
         }
-        stage('Build') {
-            parallel {
+
 //                 stage ('build project maven') {
 //                     steps {
 //                         container('maven') {
@@ -31,35 +30,34 @@ pipeline {
 //                     }
 //                 }
 
-                stage ('build project gradle') {
-                    steps {
-                        container('gradle') {
-                            dir ('.'){
-                                sh """
-                                gradle -v
-                                gradle clean build -i
-                                """
-                            }
-                        }
+        stage ('build project gradle') {
+            steps {
+                container('gradle') {
+                    dir ('.'){
+                        sh """
+                        gradle -v
+                        gradle clean build -i
+                        """
                     }
                 }
-
-                stage('Kaniko Build & Push Image') {
-                  steps {
-                    container('kaniko') {
-                      script {
-                        sh '''
-                        /kaniko/executor --dockerfile `pwd`/Dockerfile \
-                                         --context `pwd` \
-                                         --destination=inganyoyo/hello-devops-springboot:${BUILD_NUMBER}
-                        '''
-                      }
-                    }
-                  }
-                }
-
             }
         }
+
+        stage('Kaniko Build & Push Image') {
+          steps {
+            container('kaniko') {
+              script {
+                sh '''
+                /kaniko/executor --dockerfile `pwd`/Dockerfile \
+                                 --context `pwd` \
+                                 --destination=inganyoyo/hello-devops-springboot:${BUILD_NUMBER}
+                '''
+              }
+            }
+          }
+        }
+
+
     }
 }
 
