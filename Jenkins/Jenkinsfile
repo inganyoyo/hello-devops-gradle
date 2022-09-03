@@ -1,7 +1,7 @@
 pipeline {
     agent {
         kubernetes {
-          yamlFile 'k8s/container-builder.yaml'
+          yamlFile 'Jenkins/container-builder.yaml'
         }
       }
     stages {
@@ -48,7 +48,7 @@ pipeline {
             container('kaniko') {
               script {
                 sh '''
-                /kaniko/executor --dockerfile `pwd`/Dockerfile \
+                /kaniko/executor --dockerfile `pwd`/Jenkins/Dockerfile \
                                  --context `pwd` \
                                  --destination=inganyoyo/hello-devops-springboot:${BUILD_NUMBER}
                 '''
