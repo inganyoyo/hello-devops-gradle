@@ -17,6 +17,6 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: jenkins
+                name: hello-argo-service
                 port:
                   number: 8080
