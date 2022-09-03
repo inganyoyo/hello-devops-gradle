@@ -1,7 +1,7 @@
 pipeline {
     agent {
         kubernetes {
-          yamlFile 'builder.yaml'
+          yamlFile 'k8s/container-builder.yaml'
         }
       }
     stages {
@@ -10,7 +10,7 @@ pipeline {
           steps {
             echo 'Clonning Repository'
             container('maven'){
-            git url: 'https://github.com/inganyoyo/hello-devops.git',
+            git url: 'https://github.com/inganyoyo/hello-devops-gradle.git',
               branch: 'main'
               //credentialsId: '생성한 github access token credentail id' --dd
             }
@@ -34,7 +34,7 @@ pipeline {
                 stage ('build project gradle') {
                     steps {
                         container('gradle') {
-                            dir ('./hello-springboot'){
+                            dir ('.'){
                                 sh """
                                 gradle -v
                                 gradle clean build -i
