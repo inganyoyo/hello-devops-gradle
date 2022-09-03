@@ -1,0 +1,3 @@
+rootProject.name = 'hello-devops-gradle'
+
+include('hello-springboot')
