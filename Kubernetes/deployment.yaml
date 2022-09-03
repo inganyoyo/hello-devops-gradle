@@ -17,6 +17,6 @@ spec:
     spec:
       containers:
         - name: hello-devops-springboot
-          image: hello-devops-springboot:14
+          image: inganyoyo/hello-devops-springboot:17
           ports:
             - containerPort: 8080
