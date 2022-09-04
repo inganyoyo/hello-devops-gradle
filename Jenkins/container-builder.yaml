@@ -5,7 +5,7 @@ metadata:
 spec:
   containers:
     - name: git
-      image: alpine/git
+      image: alpine/git:latest
       command:
         - /bin/cat
       tty: true

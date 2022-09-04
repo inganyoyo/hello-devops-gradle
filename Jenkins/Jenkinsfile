@@ -79,7 +79,6 @@ pipeline {
                     sh "git commit -m 'fix:${BUILD_NUMBER} image versioning'"
                     sh "git branch -M main"
                     sh "git remote remove origin"
-                    sh "git config --global --add safe.directory /home/jenkins/agent/workspace/hello-devops-gradle"
                     sh "git remote add origin git@github.com:inganyoyo/k8s-manifest.git"
                     sh "git push -u origin main"
                 }
