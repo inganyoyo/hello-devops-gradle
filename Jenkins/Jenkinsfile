@@ -67,7 +67,7 @@ pipeline {
         stage('K8S Manifest Update') {
           steps {
             container('git'){
-                // git 계정 로그인, 해당 레포지토리의 main 브랜치에서 클론
+                // git 계정 로그인, 해당 레포지토리의 main 브랜치에서
                 git credentialsId: "${GIT_CREDENTIALS_ID}",
                     url: "${MANIFEST_REPOSITORY_URL}",
                     branch: "${REPOSITORY_BRANCH}"
