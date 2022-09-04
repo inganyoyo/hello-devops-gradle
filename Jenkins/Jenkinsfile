@@ -22,8 +22,8 @@ pipeline {
                 steps {
                     checkout scm: [
                         $class: 'GitSCM',
-                        branches: [[name: '*/master']],
-                        userRemoteConfigs: [[url: 'https://[path]/parent.git']],
+                        branches: [[name: '*/main']],
+                        userRemoteConfigs: [[url: 'https://github.com/inganyoyo/hello-devops-gradle.git']],
                         extensions: [[
                             $class: 'PathRestriction', excludedRegions: 'k8s/.*', includedRegions: ''
                         ]]
