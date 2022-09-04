@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hello-argo
+  namespace: hello-argo
+  labels:
+    app: hello-argo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: hello-argo
+  template:
+    metadata:
+      labels:
+        app: hello-argo
+    spec:
+      containers:
+        - name: hello-argo
+          image: inganyoyo/hello-devops-springboot:21
+          ports:
+            - containerPort: 8080
