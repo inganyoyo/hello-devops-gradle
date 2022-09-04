@@ -67,7 +67,7 @@ pipeline {
             steps {
                 container('git'){
                     git credentialsId: "${GIT_CREDENTIALS_ID}",
-                        url: "${MANIFEST_REPOSITORY_URL}",
+                        url: 'https://github.com/inganyoyo/k8s-manifest.git',
                         branch: "${REPOSITORY_BRANCH}"
                 }
             }
