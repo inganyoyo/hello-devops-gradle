@@ -52,12 +52,21 @@ pipeline {
         }
 
 ///
-        stage('K8S Manifest Update') {
+
+        stage('K8S Manifest PULL') {
           steps {
             container('git-manifest'){
                 git credentialsId: "${GIT_CREDENTIALS_ID}",
                     url: "https://github.com/inganyoyo/k8s-manifest.git",
                     branch: "${REPOSITORY_BRANCH}"
+            }
+          }
+        }
+
+        stage('K8S Manifest Update') {
+          steps {
+            container('git-manifest'){
+
                 withCredentials([gitUsernamePassword(credentialsId: "${GIT_CREDENTIALS_ID}", passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USERNAME')]) {
 
                     sh 'pwd'
