@@ -73,17 +73,14 @@ pipeline {
                     branch: "${REPOSITORY_BRANCH}"
                 // 이미지 태그 변경 후 메인 브랜치에 푸시
                 withCredentials([gitUsernamePassword(credentialsId: "${GIT_CREDENTIALS_ID}", passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USERNAME')]) {
-                    sh "git config --global user.email inganyoyo@naver.com"
+                    sh "git config --global user.email inganyoyo@me.com"
                     sh "git config --global user.name inganyoyo"
                     sh "git config --global --add safe.directory /home/jenkins/agent/workspace/hello-devops-gradle"
                     sh 'sed -i "s/hello-devops-springboot:.*/hello-devops-springboot:${BUILD_NUMBER}/g" hello-devops-gradle/deployment.yaml'
                     sh 'cat hello-devops-gradle/deployment.yaml'
                     sh 'git add .'
                     sh "git commit -m 'fix:${BUILD_NUMBER} image versioning'"
-                    sh "git branch -M main"
-                    sh "git remote remove origin"
-                    sh "git remote add origin git@github.com:inganyoyo/k8s-manifest.git"
-                    sh "git push -u origin main"
+                    sh "git push https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/${GIT_USERNAME}/hello-devops-gradle.git HEAD:main"
                 }
               }
               post {
