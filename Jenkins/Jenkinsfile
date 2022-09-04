@@ -62,7 +62,7 @@ pipeline {
                     sh "git config --global user.name inganyoyo"
                     sh 'pwd'
                     sh 'ls -lrt'
-                    sh 'cd hello-devops-gradle; ls-lrt'
+                    sh 'cd hello-devops-gradle; ls -lrt'
                     sh 'sed -i "s/hello-devops-springboot:.*/hello-devops-springboot:${BUILD_NUMBER}/g" hello-devops-gradle/deployment.yaml'
                     sh 'cat hello-devops-gradle/deployment.yaml'
                     sh 'git add .'
