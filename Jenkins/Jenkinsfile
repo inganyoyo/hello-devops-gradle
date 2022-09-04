@@ -52,8 +52,10 @@ pipeline {
         }
 
         stage('Trigger ManifestUpdate') {
-            echo "triggering updatemanifestjob"
-            build job: 'hello-devops-gradle-updatemanifest', parameters: [string(name: 'IMG_TAG', value: "${BUILD_NUMBER}")]
+            steps{
+                echo "triggering updatemanifestjob"
+                build job: 'hello-devops-gradle-updatemanifest', parameters: [string(name: 'IMG_TAG', value: "${BUILD_NUMBER}")]
+            }
         }
 
 //         stage('K8S Manifest Update') {
