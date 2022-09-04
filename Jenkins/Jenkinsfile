@@ -64,9 +64,9 @@ pipeline {
                     sh 'ls -lrt'
                     sh 'cd hello-devops-gradle-manifest;'
                     sh 'ls -lrt'
-                    sh 'cat deployment.yaml'
-                    sh 'sed -i "s/hello-devops-springboot:.*/hello-devops-springboot:${BUILD_NUMBER}/g" deployment.yaml'
-                    sh 'cat deployment.yaml'
+                    sh 'cat hello-devops-gradle-manifest/deployment.yaml'
+                    sh 'sed -i "s/hello-devops-springboot:.*/hello-devops-springboot:${BUILD_NUMBER}/g" hello-devops-gradle-manifest/deployment.yaml'
+                    sh 'cat hello-devops-gradle-manifest/deployment.yaml'
 
                     sh "git config --global user.email inganyoyo@me.com"
                     sh "git config --global user.name inganyoyo"
