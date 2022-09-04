@@ -12,57 +12,57 @@ pipeline {
         GIT_CREDENTIALS_ID = 'git-jenkins-token'
     }
     stages {
-        // git에서 repository clone
-        stage('Prepare') {
-          steps {
-            echo 'Clonning Repository'
-            container('gradle'){
-                git credentialsId: "${GIT_CREDENTIALS_ID}",
-                    url: "${SOURCE_REPOSITORY_URL}",
-                    branch: "${REPOSITORY_BRANCH}"
-            }
-          }
-        }
-
-//                 stage ('build project maven') {
-//                     steps {
-//                         container('maven') {
-//                             dir ('./hello-springboot-mvn'){
-//                                 sh """
-//                                 mvn -version
-//                                 mvn clean install
-//                                 """
-//                             }
-//                         }
+//         // git에서 repository clone
+//         stage('Prepare') {
+//           steps {
+//             echo 'Clonning Repository'
+//             container('gradle'){
+//                 git credentialsId: "${GIT_CREDENTIALS_ID}",
+//                     url: "${SOURCE_REPOSITORY_URL}",
+//                     branch: "${REPOSITORY_BRANCH}"
+//             }
+//           }
+//         }
+//
+// //                 stage ('build project maven') {
+// //                     steps {
+// //                         container('maven') {
+// //                             dir ('./hello-springboot-mvn'){
+// //                                 sh """
+// //                                 mvn -version
+// //                                 mvn clean install
+// //                                 """
+// //                             }
+// //                         }
+// //                     }
+// //                 }
+//
+//         stage ('build project gradle') {
+//             steps {
+//                 container('gradle') {
+//                     dir ('.'){
+//                         sh """
+//                         gradle -v
+//                         gradle clean build -i
+//                         """
 //                     }
 //                 }
-
-        stage ('build project gradle') {
-            steps {
-                container('gradle') {
-                    dir ('.'){
-                        sh """
-                        gradle -v
-                        gradle clean build -i
-                        """
-                    }
-                }
-            }
-        }
-
-        stage('Kaniko Build & Push Image') {
-          steps {
-            container('kaniko') {
-              script {
-                sh '''
-                /kaniko/executor --dockerfile `pwd`/Jenkins/Dockerfile \
-                                 --context `pwd` \
-                                 --destination=inganyoyo/hello-devops-springboot:${BUILD_NUMBER}
-                '''
-              }
-            }
-          }
-        }
+//             }
+//         }
+//
+//         stage('Kaniko Build & Push Image') {
+//           steps {
+//             container('kaniko') {
+//               script {
+//                 sh '''
+//                 /kaniko/executor --dockerfile `pwd`/Jenkins/Dockerfile \
+//                                  --context `pwd` \
+//                                  --destination=inganyoyo/hello-devops-springboot:${BUILD_NUMBER}
+//                 '''
+//               }
+//             }
+//           }
+//         }
 
         stage('K8S Manifest Update') {
           steps {
