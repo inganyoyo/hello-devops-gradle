@@ -13,17 +13,6 @@ pipeline {
     }
     stages {
 
-//         stage('Prepare') {
-//           steps {
-//             echo 'Clonning Repository'
-//             container('git-source'){
-//                 git credentialsId: "${GIT_CREDENTIALS_ID}",
-//                     url: "${SOURCE_REPOSITORY_URL}",
-//                     branch: "${REPOSITORY_BRANCH}"
-//             }
-//           }
-//         }
-//
         stage ('build project gradle') {
             steps {
                 container('gradle') {
@@ -51,50 +40,13 @@ pipeline {
           }
         }
 
+        stage('Trigger ManifestUpdate') {
+            echo "triggering updatemanifestjob"
+            build job: 'hello-devops-gradle-updatemanifest', parameters: [string(name: 'BUILD_NUMBER', value: env.BUILD_NUMBER)]
+        }
 
-//         stage('K8S Manifest Update') {
-//           steps {
-//             //container('git-manifest'){
-//                 git credentialsId: "${GIT_CREDENTIALS_ID}",
-//                     url: "https://github.com/inganyoyo/k8s-manifest.git",
-//                     branch: "${REPOSITORY_BRANCH}"
-//                 withCredentials([gitUsernamePassword(credentialsId: "${GIT_CREDENTIALS_ID}", passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USERNAME')]) {
-//
-//                     sh 'pwd'
-//                     sh 'ls -lrt'
-//                     sh 'cd hello-devops-gradle-manifest;'
-//                     sh 'ls -lrt'
-//                     sh 'cat hello-devops-gradle-manifest/deployment.yaml'
-//                     sh 'sed -i "s/hello-devops-springboot:.*/hello-devops-springboot:${BUILD_NUMBER}/g" hello-devops-gradle-manifest/deployment.yaml'
-//                     sh 'cat hello-devops-gradle-manifest/deployment.yaml'
-//
-//                     sh "git config --global user.email inganyoyo@me.com"
-//                     sh "git config --global user.name inganyoyo"
-//                     sh "git config --global --add safe.directory /home/jenkins/agent/workspace/hello-devops-gradle"
-//                     sh 'git add hello-devops-gradle-manifest/deployment.yaml'
-//                     sh "git commit -m 'fix:${BUILD_NUMBER} image versioning'"
-//                     sh "git push https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/${GIT_USERNAME}/k8s-manifest.git HEAD:main"
-//                 }
-//             //}
-//           }
-//         }
+
 
     }
 }
 
-
-
-//
-// //                 stage ('build project maven') {
-// //                     steps {
-// //                         container('maven') {
-// //                             dir ('./hello-springboot-mvn'){
-// //                                 sh """
-// //                                 mvn -version
-// //                                 mvn clean install
-// //                                 """
-// //                             }
-// //                         }
-// //                     }
-// //                 }
-//
