@@ -59,13 +59,17 @@ pipeline {
                     url: "https://github.com/inganyoyo/k8s-manifest.git",
                     branch: "${REPOSITORY_BRANCH}"
                 withCredentials([gitUsernamePassword(credentialsId: "${GIT_CREDENTIALS_ID}", passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USERNAME')]) {
-                    sh "git config --global user.email inganyoyo@me.com"
-                    sh "git config --global user.name inganyoyo"
+
                     sh 'pwd'
                     sh 'ls -lrt'
-                    sh 'cd hello-devops-gradle-manifest; ls -lrt'
-                    sh 'sed -i "s/hello-devops-springboot:.*/hello-devops-springboot:${BUILD_NUMBER}/g" ./deployment.yaml'
+                    sh 'cd hello-devops-gradle-manifest;'
+                    sh 'ls -lrt'
                     sh 'cat deployment.yaml'
+                    sh 'sed -i "s/hello-devops-springboot:.*/hello-devops-springboot:${BUILD_NUMBER}/g" deployment.yaml'
+                    sh 'cat deployment.yaml'
+
+                    sh "git config --global user.email inganyoyo@me.com"
+                    sh "git config --global user.name inganyoyo"
                     sh 'git add .'
                     sh "git commit -m 'fix:${BUILD_NUMBER} image versioning'"
                     //sh "git push https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/${GIT_USERNAME}/k8s-manifest.git HEAD:main"
