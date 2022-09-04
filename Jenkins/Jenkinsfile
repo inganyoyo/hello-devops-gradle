@@ -59,7 +59,7 @@ pipeline {
         stage('Trigger ManifestUpdate') {
             steps{
                 echo "triggering updatemanifestjob"
-                build job: 'hello-devops-gradle-updatemanifest', parameters: [string(name: 'IMG_TAG', value: env.BUILD_NUMBER)]
+                build job: 'hello-devops-gradle-updatemanifest', parameters: [string(name: 'IMG_TAG', value: env.BUILD_NUMBER),string(name: 'COMMIT_MSG', value: "${GIT_MESSAGE}")]
             }
         }
 
