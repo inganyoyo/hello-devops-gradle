@@ -25,7 +25,7 @@ pipeline {
                         branches: [[name: '*/main']],
                         userRemoteConfigs: [[url: 'https://github.com/inganyoyo/hello-devops-gradle.git']],
                         extensions: [[
-                            $class: 'PathRestriction', excludedRegions: 'k8s/.*', includedRegions: ''
+                            $class: 'PathRestriction', excludedRegions: 'k8s/.*', includedRegions: 'hello-springboot/.*'
                         ]]
                     ]
 
