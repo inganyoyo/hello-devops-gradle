@@ -17,41 +17,47 @@ pipeline {
     }
     stages {
 
+            stage ('build project gradle') {
+                steps {
+                    sh 'echo "Message: --${GIT_MESSAGE}--"'
 
-        stage ('build project gradle') {
-            steps {
-                sh 'echo "Message: --${GIT_MESSAGE}--"'
-                container('gradle') {
-                    dir ('.'){
-                        sh """
-                        gradle -v
-                        gradle clean build -i
-                        """
-                    }
                 }
             }
-        }
 
-        stage('Kaniko Build & Push Image') {
-          steps {
-            container('kaniko') {
-              script {
-                sh '''
-                /kaniko/executor --dockerfile `pwd`/Jenkins/Dockerfile \
-                                 --context `pwd` \
-                                 --destination=inganyoyo/hello-devops-springboot:${BUILD_NUMBER}
-                '''
-              }
-            }
-          }
-        }
-
-        stage('Trigger ManifestUpdate') {
-            steps{
-                echo "triggering updatemanifestjob"
-                build job: 'hello-devops-gradle-updatemanifest', parameters: [string(name: 'IMG_TAG', value: env.BUILD_NUMBER),string(name: 'COMMIT_MSG', value: "${GIT_MESSAGE}")]
-            }
-        }
+//         stage ('build project gradle') {
+//             steps {
+//                 sh 'echo "Message: --${GIT_MESSAGE}--"'
+//                 container('gradle') {
+//                     dir ('.'){
+//                         sh """
+//                         gradle -v
+//                         gradle clean build -i
+//                         """
+//                     }
+//                 }
+//             }
+//         }
+//
+//         stage('Kaniko Build & Push Image') {
+//           steps {
+//             container('kaniko') {
+//               script {
+//                 sh '''
+//                 /kaniko/executor --dockerfile `pwd`/Jenkins/Dockerfile \
+//                                  --context `pwd` \
+//                                  --destination=inganyoyo/hello-devops-springboot:${BUILD_NUMBER}
+//                 '''
+//               }
+//             }
+//           }
+//         }
+//
+//         stage('Trigger ManifestUpdate') {
+//             steps{
+//                 echo "triggering updatemanifestjob"
+//                 build job: 'hello-devops-gradle-updatemanifest', parameters: [string(name: 'IMG_TAG', value: env.BUILD_NUMBER),string(name: 'COMMIT_MSG', value: "${GIT_MESSAGE}")]
+//             }
+//         }
 
 
 
