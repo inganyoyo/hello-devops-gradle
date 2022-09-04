@@ -4,15 +4,20 @@ pipeline {
           yamlFile 'Jenkins/container-builder.yaml'
         }
       }
+
+    environment{
+        SOURCE_REPOSITORY_URL = 'https://github.com/inganyoyo/hello-devops-gradle.git',
+        SOURCE_REPOSITORY_BRANCH = 'main'
+    }
     stages {
         // git에서 repository clone
         stage('Prepare') {
           steps {
             echo 'Clonning Repository'
-            container('maven'){
+            container('git'){
                 git credentialsId: 'git-jenkins-token',
-                    url: 'https://github.com/inganyoyo/hello-devops-gradle.git',
-                    branch: 'main'
+                    url: '${SOURCE_REPOSITORY_URL}',
+                    branch: '${SOURCE_REPOSITORY_BRANCH}'
             }
           }
         }
