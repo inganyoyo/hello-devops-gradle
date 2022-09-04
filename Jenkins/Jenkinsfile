@@ -16,8 +16,8 @@ pipeline {
             echo 'Clonning Repository'
             container('git'){
                 git credentialsId: 'git-jenkins-token',
-                    url: "${SOURCE_REPOSITORY_URL}",
-                    branch: "${SOURCE_REPOSITORY_BRANCH}"
+                    url: ${SOURCE_REPOSITORY_URL},
+                    branch: ${SOURCE_REPOSITORY_BRANCH}
             }
           }
         }
