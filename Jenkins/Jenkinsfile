@@ -6,7 +6,7 @@ pipeline {
       }
 
     environment{
-        SOURCE_REPOSITORY_URL = 'https://github.com/inganyoyo/hello-devops-gradle.git',
+        SOURCE_REPOSITORY_URL = 'https://github.com/inganyoyo/hello-devops-gradle.git'
         SOURCE_REPOSITORY_BRANCH = 'main'
     }
     stages {
