@@ -64,10 +64,12 @@ pipeline {
 //           }
 //         }
         stage('K8S Manifest CHECK OUT') {
-            container('git'){
-                git credentialsId: "${GIT_CREDENTIALS_ID}",
-                    url: "${MANIFEST_REPOSITORY_URL}",
-                    branch: "${REPOSITORY_BRANCH}"
+            steps {
+                container('git'){
+                    git credentialsId: "${GIT_CREDENTIALS_ID}",
+                        url: "${MANIFEST_REPOSITORY_URL}",
+                        branch: "${REPOSITORY_BRANCH}"
+                }
             }
         }
         stage('K8S Manifest Update') {
