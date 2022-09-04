@@ -72,7 +72,7 @@ pipeline {
                     url: "${MANIFEST_REPOSITORY_URL}",
                     branch: "${REPOSITORY_BRANCH}"
                 // 이미지 태그 변경 후 메인 브랜치에 푸시
-                withCredentials([gitUsernamePassword(credentialsId: "${GIT_CREDENTIALS_ID}")]) {
+                withCredentials([gitUsernamePassword(credentialsId: "${GIT_CREDENTIALS_ID}", passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USERNAME')]) {
                     sh "git config --global user.email inganyoyo@naver.com"
                     sh "git config --global user.name inganyoyo"
                     sh 'sed -i "s/<TAG>/${BUILD_NUMBER}/" hello-devops-gradle/deployment.yaml'
