@@ -14,7 +14,7 @@ pipeline {
               branch: 'main'
               //credentialsId: '생성한 github access token credentail id' --dd
             }
-            }
+           }
         }
 
 //                 stage ('build project maven') {
