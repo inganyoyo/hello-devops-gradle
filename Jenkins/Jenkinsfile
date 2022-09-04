@@ -10,8 +10,8 @@ pipeline {
           steps {
             echo 'Clonning Repository'
             container('maven'){
-                //git credentialsId: 'git-jenkins-token'
-                git url: 'https://github.com/inganyoyo/hello-devops-gradle.git',
+                git credentialsId: 'git-jenkins-token'
+                 url: 'https://github.com/inganyoyo/hello-devops-gradle.git',
                     branch: 'main'
             }
           }
