@@ -18,33 +18,33 @@ pipeline {
     }
     stages {
 
-//         stage ('build project gradle') {
-//             steps {
-//                 sh 'echo "Message: --${GIT_MESSAGE}--"'
-//                 container('gradle') {
-//                     dir ('.'){
-//                         sh """
-//                         gradle -v
-//                         gradle clean build -i
-//                         """
-//                     }
-//                 }
-//             }
-//         }
-//
-//         stage('Kaniko Build & Push Image') {
-//           steps {
-//             container('kaniko') {
-//               script {
-//                 sh '''
-//                 /kaniko/executor --dockerfile `pwd`/Jenkins/Dockerfile \
-//                                  --context `pwd` \
-//                                  --destination=inganyoyo/hello-devops-springboot:${BUILD_NUMBER}
-//                 '''
-//               }
-//             }
-//           }
-//         }
+        stage ('build project gradle') {
+            steps {
+                sh 'echo "Message: --${GIT_MESSAGE}--"'
+                container('gradle') {
+                    dir ('.'){
+                        sh """
+                        gradle -v
+                        gradle clean build -i
+                        """
+                    }
+                }
+            }
+        }
+
+        stage('Kaniko Build & Push Image') {
+          steps {
+            container('kaniko') {
+              script {
+                sh '''
+                /kaniko/executor --dockerfile `pwd`/Jenkins/Dockerfile \
+                                 --context `pwd` \
+                                 --destination=inganyoyo/hello-devops-springboot:${BUILD_NUMBER}
+                '''
+              }
+            }
+          }
+        }
 
         stage('K8S Manifest Update') {
           steps {
