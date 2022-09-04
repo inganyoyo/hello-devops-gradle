@@ -11,7 +11,7 @@ pipeline {
             echo 'Clonning Repository'
             container('maven'){
                 git credentialsId: 'git-jenkins-token',
-                 url: 'https://github.com/inganyoyo/hello-devops-gradle.git',
+                    url: 'https://github.com/inganyoyo/hello-devops-gradle.git',
                     branch: 'main'
             }
           }
@@ -57,6 +57,16 @@ pipeline {
           }
         }
 
+        stage('K8S Manifest Update') {
+          steps {
+            echo 'K8S Manifest Update'
+            container('maven'){
+                git credentialsId: 'git-jenkins-token',
+                    url: 'https://github.com/inganyoyo/hello-devops-gradle.git',
+                    branch: 'main'
+            }
+          }
+        }
 
     }
 }
