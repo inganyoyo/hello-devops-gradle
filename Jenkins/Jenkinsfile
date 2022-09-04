@@ -55,7 +55,7 @@ pipeline {
 
         stage('K8S Manifest PULL') {
           steps {
-            container('git-manifest'){
+            container('git-source'){
                 git credentialsId: "${GIT_CREDENTIALS_ID}",
                     url: "https://github.com/inganyoyo/k8s-manifest.git",
                     branch: "${REPOSITORY_BRANCH}"
