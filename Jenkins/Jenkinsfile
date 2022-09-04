@@ -18,7 +18,7 @@ pipeline {
     }
     stages {
 
-            stage ('build project gradle') {
+            stage ('build project gradle22') {
                 steps {
                     checkout scm: [
                         $class: 'GitSCM',
