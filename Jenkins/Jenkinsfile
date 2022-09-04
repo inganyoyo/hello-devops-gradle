@@ -72,14 +72,16 @@ pipeline {
                     url: "${MANIFEST_REPOSITORY_URL}",
                     branch: "${REPOSITORY_BRANCH}"
                 // 이미지 태그 변경 후 메인 브랜치에 푸시
-                sh "git config --global user.email inganyoyo@naver.com"
-                sh "git config --global user.name inganyoyo"
-                sh 'sed -i "s/<TAG>/${BUILD_NUMBER}/" hello-devops-gradle/deployment.yaml'
-                sh "git commit -m 'fix:${BUILD_NUMBER} image versioning'"
-                sh "git branch -M main"
-                sh "git remote remove origin"
-                sh "git remote add origin git@github.com:inganyoyo/k8s-manifest.git"
-                sh "git push -u origin main"
+                withCredentials([gitUsernamePassword(credentialsId: "${GIT_CREDENTIALS_ID}")]) {
+                    sh "git config --global user.email inganyoyo@naver.com"
+                    sh "git config --global user.name inganyoyo"
+                    sh 'sed -i "s/<TAG>/${BUILD_NUMBER}/" hello-devops-gradle/deployment.yaml'
+                    sh "git commit -m 'fix:${BUILD_NUMBER} image versioning'"
+                    sh "git branch -M main"
+                    sh "git remote remove origin"
+                    sh "git remote add origin git@github.com:inganyoyo/k8s-manifest.git"
+                    sh "git push -u origin main"
+                }
               }
               post {
                 failure {
