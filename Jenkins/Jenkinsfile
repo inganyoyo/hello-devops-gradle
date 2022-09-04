@@ -79,6 +79,7 @@ pipeline {
                     sh "git config --global user.email inganyoyo@me.com"
                     sh "git config --global user.name inganyoyo"
                     sh "git config --global --add safe.directory /home/jenkins/agent/workspace/hello-devops-gradle"
+                    sh 'git pull'
                     sh 'sed -i "s/hello-devops-springboot:.*/hello-devops-springboot:${BUILD_NUMBER}/g" hello-devops-gradle/deployment.yaml'
                     sh 'cat hello-devops-gradle/deployment.yaml'
                     sh 'git add .'
