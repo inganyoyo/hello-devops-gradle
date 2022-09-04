@@ -5,6 +5,7 @@ pipeline {
         }
       }
 
+
     environment{
         SOURCE_REPOSITORY_URL = 'https://github.com/inganyoyo/hello-devops-gradle.git'
         MANIFEST_REPOSITORY_URL = 'https://github.com/inganyoyo/k8s-manifest.git'
@@ -16,6 +17,20 @@ pipeline {
             )}"""
     }
     stages {
+
+            stage ('build project gradle') {
+                steps {
+                    checkout scm: [
+                        $class: 'GitSCM',
+                        branches: [[name: '*/master']],
+                        userRemoteConfigs: [[url: 'https://[path]/parent.git']],
+                        extensions: [[
+                            $class: 'PathRestriction', excludedRegions: 'k8s/.*', includedRegions: ''
+                        ]]
+                    ]
+
+                }
+            }
 
             stage ('build project gradle') {
                 steps {
