@@ -4,12 +4,7 @@ metadata:
   name: custom-container
 spec:
   containers:
-    - name: git-source
-      image: alpine/git:v2.36.2
-      command:
-        - /bin/cat
-      tty: true
-    - name: git-manifest
+    - name: git
       image: alpine/git:v2.36.2
       command:
         - /bin/cat
