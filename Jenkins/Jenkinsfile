@@ -68,7 +68,7 @@ pipeline {
                     sh 'cat hello-devops-gradle/deployment.yaml'
                     sh 'git add .'
                     sh "git commit -m 'fix:${BUILD_NUMBER} image versioning'"
-                    sh "git push https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/${GIT_USERNAME}/k8s-manifest.git HEAD:main"
+                    //sh "git push https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/${GIT_USERNAME}/k8s-manifest.git HEAD:main"
                 }
             }
           }
