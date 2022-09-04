@@ -67,7 +67,7 @@ pipeline {
         stage('K8S Manifest Update') {
           steps {
             container('git'){
-                // git 계정 로그인, 해당 레포지토리의 main 브랜치에서
+                // git 계정 로그인, 해당 레포지토리의 main 브랜치에서 클론
                 git credentialsId: "${GIT_CREDENTIALS_ID}",
                     url: "${MANIFEST_REPOSITORY_URL}",
                     branch: "${REPOSITORY_BRANCH}"
@@ -76,7 +76,7 @@ pipeline {
                     sh "git config --global user.email inganyoyo@naver.com"
                     sh "git config --global user.name inganyoyo"
                     sh "git config --global --add safe.directory /home/jenkins/agent/workspace/hello-devops-gradle"
-                    sh 'sed -i "s/hello-devops-springboot:.*/hello-devops-springboot/${BUILD_NUMBER}/g" hello-devops-gradle/deployment.yaml'
+                    sh 'sed -i "s/hello-devops-springboot:.*/hello-devops-springboot:${BUILD_NUMBER}/g" hello-devops-gradle/deployment.yaml'
                     sh 'cat hello-devops-gradle/deployment.yaml'
                     sh 'git add .'
                     sh "git commit -m 'fix:${BUILD_NUMBER} image versioning'"
