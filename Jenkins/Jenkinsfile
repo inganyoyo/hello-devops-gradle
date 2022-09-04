@@ -24,18 +24,18 @@ pipeline {
 //           }
 //         }
 //
-//         stage ('build project gradle') {
-//             steps {
-//                 container('gradle') {
-//                     dir ('.'){
-//                         sh """
-//                         gradle -v
-//                         gradle clean build -i
-//                         """
-//                     }
-//                 }
-//             }
-//         }
+        stage ('build project gradle') {
+            steps {
+                container('gradle') {
+                    dir ('.'){
+                        sh """
+                        gradle -v
+                        gradle clean build -i
+                        """
+                    }
+                }
+            }
+        }
 //
 //         stage('Kaniko Build & Push Image') {
 //           steps {
