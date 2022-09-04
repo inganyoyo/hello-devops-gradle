@@ -12,57 +12,44 @@ pipeline {
         GIT_CREDENTIALS_ID = 'git-jenkins-token'
     }
     stages {
-        // git에서 repository clone
-        stage('Prepare') {
-          steps {
-            echo 'Clonning Repository'
-            container('git-source'){
-                git credentialsId: "${GIT_CREDENTIALS_ID}",
-                    url: "${SOURCE_REPOSITORY_URL}",
-                    branch: "${REPOSITORY_BRANCH}"
-            }
-          }
-        }
 //
-// //                 stage ('build project maven') {
-// //                     steps {
-// //                         container('maven') {
-// //                             dir ('./hello-springboot-mvn'){
-// //                                 sh """
-// //                                 mvn -version
-// //                                 mvn clean install
-// //                                 """
-// //                             }
-// //                         }
-// //                     }
-// //                 }
+//         stage('Prepare') {
+//           steps {
+//             echo 'Clonning Repository'
+//             container('git-source'){
+//                 git credentialsId: "${GIT_CREDENTIALS_ID}",
+//                     url: "${SOURCE_REPOSITORY_URL}",
+//                     branch: "${REPOSITORY_BRANCH}"
+//             }
+//           }
+//         }
 //
-        stage ('build project gradle') {
-            steps {
-                container('gradle') {
-                    dir ('.'){
-                        sh """
-                        gradle -v
-                        gradle clean build -i
-                        """
-                    }
-                }
-            }
-        }
-
-        stage('Kaniko Build & Push Image') {
-          steps {
-            container('kaniko') {
-              script {
-                sh '''
-                /kaniko/executor --dockerfile `pwd`/Jenkins/Dockerfile \
-                                 --context `pwd` \
-                                 --destination=inganyoyo/hello-devops-springboot:${BUILD_NUMBER}
-                '''
-              }
-            }
-          }
-        }
+//         stage ('build project gradle') {
+//             steps {
+//                 container('gradle') {
+//                     dir ('.'){
+//                         sh """
+//                         gradle -v
+//                         gradle clean build -i
+//                         """
+//                     }
+//                 }
+//             }
+//         }
+//
+//         stage('Kaniko Build & Push Image') {
+//           steps {
+//             container('kaniko') {
+//               script {
+//                 sh '''
+//                 /kaniko/executor --dockerfile `pwd`/Jenkins/Dockerfile \
+//                                  --context `pwd` \
+//                                  --destination=inganyoyo/hello-devops-springboot:${BUILD_NUMBER}
+//                 '''
+//               }
+//             }
+//           }
+//         }
 
         stage('K8S Manifest Update') {
           steps {
@@ -81,17 +68,25 @@ pipeline {
                    // sh "git push https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/${GIT_USERNAME}/k8s-manifest.git HEAD:main"
                 }
             }
-//               post {
-//                 failure {
-//                   echo "FAILED: K8S Manifest Update '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})"
-//                 }
-//                 success {
-//                   echo "SUCCESS: K8S Manifest Update '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})"
-//                 }
-//               }
-            }
+          }
         }
 
     }
 }
 
+
+
+//
+// //                 stage ('build project maven') {
+// //                     steps {
+// //                         container('maven') {
+// //                             dir ('./hello-springboot-mvn'){
+// //                                 sh """
+// //                                 mvn -version
+// //                                 mvn clean install
+// //                                 """
+// //                             }
+// //                         }
+// //                     }
+// //                 }
+//
