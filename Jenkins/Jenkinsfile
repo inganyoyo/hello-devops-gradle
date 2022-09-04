@@ -77,6 +77,7 @@ pipeline {
                     sh "git config --global user.name inganyoyo"
                     sh "git config --global --add safe.directory /home/jenkins/agent/workspace/hello-devops-gradle"
                     sh 'sed -i "s/<TAG>/${BUILD_NUMBER}/" hello-devops-gradle/deployment.yaml'
+                    sh 'git add .'
                     sh "git commit -m 'fix:${BUILD_NUMBER} image versioning'"
                     sh "git branch -M main"
                     sh "git remote remove origin"
