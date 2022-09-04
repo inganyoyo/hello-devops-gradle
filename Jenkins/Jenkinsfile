@@ -41,12 +41,11 @@ pipeline {
         }
 
         stage('Trigger ManifestUpdate') {
+          steps {
             echo "triggering updatemanifestjob"
             build job: 'hello-devops-gradle-updatemanifest', parameters: [string(name: 'BUILD_NUMBER', value: env.BUILD_NUMBER)]
+          }
         }
-
-
-
     }
 }
 
