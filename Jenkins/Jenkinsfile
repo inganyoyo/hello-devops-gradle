@@ -10,11 +10,11 @@ pipeline {
           steps {
             echo 'Clonning Repository'
             container('maven'){
-            git url: 'https://github.com/inganyoyo/hello-devops-gradle.git',
-              branch: 'main'
-              //credentialsId: '생성한 github access token credentail id' --dd
+                git credentialsId: 'git-jenkins-token'
+                    url: 'https://github.com/inganyoyo/hello-devops-gradle.git',
+                    branch: 'main'
             }
-           }
+          }
         }
 
 //                 stage ('build project maven') {
