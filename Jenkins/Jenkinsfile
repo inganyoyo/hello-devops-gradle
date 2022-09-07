@@ -11,8 +11,9 @@ pipeline {
 		MANIFEST_REPOSITORY_URL = 'https://github.com/inganyoyo/k8s-manifest.git'
 		REPOSITORY_BRANCH = 'main'
 		GIT_CREDENTIALS_ID = 'git-jenkins-token'
-		GIT_MESSAGE = """${sh(script: 'git log --no-walk --format=format:%s ${GIT_COMMIT}',
-				returnStdout: true)}"""
+		GIT_MESSAGE = """
+		                  ${sh(script: 'git log --no-walk --format=format:%s ${GIT_COMMIT}', returnStdout: true)}
+				      """
 	}
 	stages {
 

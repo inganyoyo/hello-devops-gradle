@@ -9,11 +9,6 @@ spec:
       command:
         - /bin/cat
       tty: true
-    - name: kubectl
-      image: joshendriks/alpine-k8s
-      command:
-        - /bin/cat
-      tty: true
     - name: kaniko
       image: gcr.io/kaniko-project/executor:debug
       command:
@@ -22,15 +17,6 @@ spec:
       volumeMounts:
         - name: jenkins-docker-cfg
           mountPath: /kaniko/.docker
-#    - name: maven
-#      image: maven:3.6.3-jdk-8
-#      command:
-#        - sleep
-#      args:
-#        - infinity
-#      volumeMounts:
-#        - name: jenkins-maven
-#          mountPath: /root/.m2
     - name: gradle
       image: gradle:jdk8
       command:
@@ -49,9 +35,27 @@ spec:
               items:
                 - key: .dockerconfigjson
                   path: config.json
-#    - name: jenkins-maven
-#      persistentVolumeClaim:
-#        claimName: "jenkins-maven"
     - name: jenkins-gradle
       persistentVolumeClaim:
         claimName: "jenkins-gradle"
+
+
+
+#    - name: kubectl
+#      image: joshendriks/alpine-k8s
+#      command:
+#        - /bin/cat
+#      tty: true
+#    - name: maven
+#      image: maven:3.6.3-jdk-8
+#      command:
+#        - sleep
+#      args:
+#        - infinity
+#      volumeMounts:
+#        - name: jenkins-maven
+#          mountPath: /root/.m2
+
+#    - name: jenkins-maven
+#      persistentVolumeClaim:
+#        claimName: "jenkins-maven"
