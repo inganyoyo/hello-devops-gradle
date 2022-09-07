@@ -1,77 +1,67 @@
 pipeline {
-    agent {
-        kubernetes {
-          yamlFile 'Jenkins/container-builder.yaml'
-        }
-      }
+	agent {
+		kubernetes {
+			yamlFile 'Jenkins/container-builder.yaml'
+		}
+	}
 
 
-    environment{
-        SOURCE_REPOSITORY_URL = 'https://github.com/inganyoyo/hello-devops-gradle.git'
-        MANIFEST_REPOSITORY_URL = 'https://github.com/inganyoyo/k8s-manifest.git'
-        REPOSITORY_BRANCH = 'main'
-        GIT_CREDENTIALS_ID = 'git-jenkins-token'
-        GIT_MESSAGE = """${sh(
-            script: 'git log --no-walk --format=format:%s ${GIT_COMMIT}',
-            returnStdout: true
-            )}"""
-    }
-    stages {
+	environment {
+		SOURCE_REPOSITORY_URL = 'https://github.com/inganyoyo/hello-devops-gradle.git'
+		MANIFEST_REPOSITORY_URL = 'https://github.com/inganyoyo/k8s-manifest.git'
+		REPOSITORY_BRANCH = 'main'
+		GIT_CREDENTIALS_ID = 'git-jenkins-token'
+		GIT_MESSAGE = """${sh(script: 'git log --no-walk --format=format:%s ${GIT_COMMIT}',
+				returnStdout: true)}"""
+	}
+	stages {
 
-        stage ('build project gradle') {
-            steps {
-                sh 'echo "Message: --${GIT_MESSAGE}--"'
-                container('gradle') {
-                    dir ('.'){
-                        sh """
+		stage('build project gradle') {
+			steps {
+				sh 'echo "Message: --${GIT_MESSAGE}--"'
+				container('gradle') {
+					dir('.') {
+						sh """
                         gradle -v
                         gradle clean build -i
                         """
-                    }
-                }
-            }
-        }
+					}
+				}
+			}
+		}
 
-        stage('Kaniko Build & Push Image') {
-          steps {
-            container('kaniko') {
-              script {
-                sh '''
-                /kaniko/executor --dockerfile `pwd`/Jenkins/Dockerfile \
-                                 --context `pwd` \
-                                 --destination=inganyoyo/hello-devops-springboot:${BUILD_NUMBER}
-                '''
-              }
-            }
-          }
-        }
+		stage('Kaniko Build & Push Image') {
+			steps {
+				container('kaniko') {
+					script {
+						sh '''
+                            /kaniko/executor --dockerfile `pwd`/Jenkins/Dockerfile \
+	                         --context `pwd` \
+	                         --destination=inganyoyo/hello-devops-springboot:${BUILD_NUMBER}
+                         '''
+					}
+				}
+			}
+		}
 
-        stage('K8S Manifest Update') {
-          steps {
-            container('git'){
-                git credentialsId: "${GIT_CREDENTIALS_ID}",
-                    url: "${SOURCE_REPOSITORY_URL}",
-                    branch: "${REPOSITORY_BRANCH}"
-                withCredentials([gitUsernamePassword(credentialsId: "${GIT_CREDENTIALS_ID}", passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USERNAME')]) {
-
-                    sh 'pwd'
-                    sh 'ls -lrt'
-                    sh 'cd k8s;'
-                    sh 'ls -lrt'
-                    sh 'cat k8s/deployment.yaml'
-                    sh 'sed -i "s/hello-devops-springboot:.*/hello-devops-springboot:${BUILD_NUMBER}/g" k8s/deployment.yaml'
-                    sh 'cat k8s/deployment.yaml'
-
-                    sh "git config --global user.email inganyoyo@me.com"
-                    sh "git config --global user.name inganyoyo"
-                    sh "git config --global --add safe.directory /home/jenkins/agent/workspace/hello-devops-gradle"
-                    sh 'git add k8s/deployment.yaml'
-                    sh "git commit -m 'fix:${BUILD_NUMBER} image versioning---${GIT_MESSAGE}---'"
-                    sh "git push https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/${GIT_USERNAME}/hello-devops-gradle.git HEAD:main"
-              }
-            }
-          }
-        }
+		stage('K8S Manifest Update') {
+			steps {
+				container('git') {
+					git credentialsId: "${GIT_CREDENTIALS_ID}",
+							url: "${SOURCE_REPOSITORY_URL}",
+							branch: "${REPOSITORY_BRANCH}"
+					withCredentials([gitUsernamePassword(credentialsId: "${GIT_CREDENTIALS_ID}", passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USERNAME')]) {
+						sh 'sed -i "s/hello-devops-springboot:.*/hello-devops-springboot:${BUILD_NUMBER}/g" k8s/deployment.yaml'
+						sh "git config --global user.email inganyoyo@me.com"
+						sh "git config --global user.name inganyoyo"
+						sh "git config --global --add safe.directory /home/jenkins/agent/workspace/hello-devops-gradle"
+						sh 'git add k8s/deployment.yaml'
+						sh "git commit -m 'fix:${BUILD_NUMBER} image versioning---${GIT_MESSAGE}---'"
+						sh "git push https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/${GIT_USERNAME}/hello-devops-gradle.git HEAD:main"
+					}
+				}
+			}
+		}
 
 //
 //         stage('Trigger ManifestUpdate') {
@@ -82,7 +72,6 @@ pipeline {
 //         }
 
 
-
-    }
+	}
 }
 
