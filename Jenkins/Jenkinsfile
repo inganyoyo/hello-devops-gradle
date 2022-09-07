@@ -22,8 +22,8 @@ pipeline {
 				container('gradle') {
 					dir('.') {
 						sh """
-                        gradle -v
-                        gradle clean build -i
+	                        gradle -v
+	                        gradle clean build -i
                         """
 					}
 				}
@@ -51,13 +51,15 @@ pipeline {
 							url: "${SOURCE_REPOSITORY_URL}",
 							branch: "${REPOSITORY_BRANCH}"
 					withCredentials([gitUsernamePassword(credentialsId: "${GIT_CREDENTIALS_ID}", passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USERNAME')]) {
-						sh 'sed -i "s/hello-devops-springboot:.*/hello-devops-springboot:${BUILD_NUMBER}/g" k8s/deployment.yaml'
-						sh "git config --global user.email inganyoyo@me.com"
-						sh "git config --global user.name inganyoyo"
-						sh "git config --global --add safe.directory /home/jenkins/agent/workspace/hello-devops-gradle"
-						sh 'git add k8s/deployment.yaml'
-						sh "git commit -m 'fix:${BUILD_NUMBER} image versioning---${GIT_MESSAGE}---'"
-						sh "git push https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/${GIT_USERNAME}/hello-devops-gradle.git HEAD:main"
+						sh '''
+							sed -i "s/hello-devops-springboot:.*/hello-devops-springboot:${BUILD_NUMBER}/g" k8s/deployment.yaml
+							git config --global user.email inganyoyo@me.com
+							git config --global user.name inganyoyo
+							git config --global --add safe.directory /home/jenkins/agent/workspace/hello-devops-gradle
+							git add k8s/deployment.yaml
+							git commit -m 'fix:${BUILD_NUMBER} image versioning---${GIT_MESSAGE}---'
+							git push https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/${GIT_USERNAME}/hello-devops-gradle.git HEAD:main
+						'''
 					}
 				}
 			}
@@ -70,8 +72,5 @@ pipeline {
 //                 build job: 'hello-devops-gradle-updatemanifest', parameters: [string(name: 'IMG_TAG', value: env.BUILD_NUMBER),string(name: 'COMMIT_MSG', value: "${GIT_MESSAGE}")]
 //             }
 //         }
-
-
 	}
 }
-
