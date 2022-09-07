@@ -18,6 +18,6 @@ spec:
     spec:
       containers:
         - name: hello-argo
-          image: inganyoyo/hello-devops-springboot:175
+          image: inganyoyo/hello-devops-springboot:176
           ports:
             - containerPort: 8080
