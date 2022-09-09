@@ -1,7 +1,7 @@
 pipeline {
 	agent {
 		kubernetes {
-			//yamlFile 'Jenkins/container-builder.yaml'
+			yamlFile 'Jenkins/container-builder.yaml'
 		}
 	}
 
