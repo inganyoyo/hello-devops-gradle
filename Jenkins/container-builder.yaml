@@ -13,32 +13,32 @@ spec:
       volumeMounts:
         - name: jenkins-gradle
           mountPath: /home/gradle/.gradle
-#    - name: git
-#      image: alpine/git:v2.36.2
-#      command:
-#        - /bin/cat
-#      tty: true
-#    - name: kaniko
-#      image: gcr.io/kaniko-project/executor:debug
-#      command:
-#        - /busybox/cat
-#      tty: true
-#      volumeMounts:
-#        - name: jenkins-docker-cfg
-#          mountPath: /kaniko/.docker
+    - name: git
+      image: alpine/git:v2.36.2
+      command:
+        - /bin/cat
+      tty: true
+    - name: kaniko
+      image: gcr.io/kaniko-project/executor:debug
+      command:
+        - /busybox/cat
+      tty: true
+      volumeMounts:
+        - name: jenkins-docker-cfg
+          mountPath: /kaniko/.docker
 
   volumes:
     - name: jenkins-gradle
       persistentVolumeClaim:
         claimName: "jenkins-gradle"
-#    - name: jenkins-docker-cfg
-#      projected:
-#        sources:
-#          - secret:
-#              name: docker-credentials
-#              items:
-#                - key: .dockerconfigjson
-#                  path: config.json
+    - name: jenkins-docker-cfg
+      projected:
+        sources:
+          - secret:
+              name: docker-credentials
+              items:
+                - key: .dockerconfigjson
+                  path: config.json
 
 
 
