@@ -4,6 +4,15 @@ metadata:
   name: custom-container
 spec:
   containers:
+    - name: gradle
+      image: gradle:jdk8
+      command:
+        - sleep
+      args:
+        - infinity
+      volumeMounts:
+        - name: jenkins-gradle
+          mountPath: /home/gradle/.gradle
 #    - name: git
 #      image: alpine/git:v2.36.2
 #      command:
@@ -17,16 +26,11 @@ spec:
 #      volumeMounts:
 #        - name: jenkins-docker-cfg
 #          mountPath: /kaniko/.docker
-    - name: gradle
-      image: gradle:jdk8
-      command:
-        - sleep
-      args:
-        - infinity
-      volumeMounts:
-        - name: jenkins-gradle
-          mountPath: /home/gradle/.gradle
+
   volumes:
+    - name: jenkins-gradle
+      persistentVolumeClaim:
+        claimName: "jenkins-gradle"
 #    - name: jenkins-docker-cfg
 #      projected:
 #        sources:
@@ -35,9 +39,7 @@ spec:
 #              items:
 #                - key: .dockerconfigjson
 #                  path: config.json
-    - name: jenkins-gradle
-      persistentVolumeClaim:
-        claimName: "jenkins-gradle"
+
 
 
 
